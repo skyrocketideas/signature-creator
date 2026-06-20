@@ -279,7 +279,7 @@ function placeholderCell(item, size = 78) {
 }
 
 function logoHtml() {
-  return `<img src="${escapeHtml(assetUrl(LOCKED_LOGO_PATH))}" width="104" alt="FKP Scorpio Entertainment" style="display:block;width:104px;max-width:104px;border:0;outline:none;text-decoration:none;" />`;
+  return `<img src="${escapeHtml(assetUrl(LOCKED_LOGO_PATH))}" width="104" height="33" alt="" style="display:block;width:104px;height:33px;max-width:104px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;" />`;
 }
 
 function footerImagesHtml() {
@@ -287,14 +287,14 @@ function footerImagesHtml() {
   return footerImages
     .map((item, index) => {
       const media = item.image
-        ? `<img src="${escapeHtml(imageUrl(item.image))}" width="78" height="78" alt="${escapeHtml(item.label)}" style="display:block;width:78px;height:78px;border:0;outline:none;text-decoration:none;" />`
+        ? `<img src="${escapeHtml(imageUrl(item.image))}" width="78" height="78" alt="" style="display:block;width:78px;height:78px;border:0;outline:none;text-decoration:none;font-size:0;line-height:0;" />`
         : placeholderCell(item);
       const linkedMedia = item.link
-        ? `<a href="${escapeHtml(normalizeUrl(item.link))}" target="_blank" style="display:block;text-decoration:none;border:0;">${media}</a>`
+        ? `<a href="${escapeHtml(normalizeUrl(item.link))}" target="_blank" title="${escapeHtml(item.label)}" aria-label="${escapeHtml(item.label)}" style="display:block;text-decoration:none;border:0;">${media}</a>`
         : media;
       const spacer = index === footerImages.length - 1 ? "" : '<td width="5" style="width:5px;font-size:0;line-height:0;">&nbsp;</td>';
 
-      return `<td width="78" valign="top" style="width:78px;padding:0;">${linkedMedia}</td>${spacer}`;
+      return `<td width="78" height="78" valign="top" bgcolor="${escapeHtml(item.color)}" style="width:78px;height:78px;padding:0;background:${escapeHtml(item.color)};">${linkedMedia}</td>${spacer}`;
     })
     .join("");
 }
