@@ -1,4 +1,4 @@
-const STORAGE_KEY = "email-sigs-fkp-template-v4";
+const STORAGE_KEY = "email-sigs-fkp-template-v5";
 const LOCKED_COMPANY_NAME = "FKP Scorpio Entertainment Ltd";
 const LOCKED_WEBSITE = "fkpscorpioentertainment.com";
 const LOCKED_LOGO_PATH = "assets/fkp-logo-black-email.png";
