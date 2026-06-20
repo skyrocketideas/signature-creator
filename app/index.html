@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple company email signature manager with live previews and email-safe HTML."
+    />
+    <title>Email Sigs — Email Signature Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <main class="main-content">
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">Workspace</p>
+            <h1>Email signatures</h1>
+            <p>Create FKP Scorpio email signatures with minimal editing.</p>
+          </div>
+          <div class="heading-actions">
+            <span class="saved-state" id="savedState">
+              <span class="saved-dot"></span>
+              Saved
+            </span>
+            <button class="button button-primary" id="copySignatureTop" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+              </svg>
+              Copy signature
+            </button>
+          </div>
+        </section>
+
+        <div class="workspace">
+          <section class="editor-panel">
+            <div class="editor-header">
+              <div>
+                <p class="eyebrow">Signature setup</p>
+                <h2>Client template</h2>
+              </div>
+              <span class="count-badge" id="peopleCount">3</span>
+            </div>
+
+            <div class="tab-content is-active" id="people-panel">
+              <div class="panel-intro">
+                <div>
+                  <h2>Team members</h2>
+                </div>
+                <button class="button button-secondary button-small" id="addPerson" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                  Add person
+                </button>
+              </div>
+
+              <div class="people-strip" id="peopleStrip"></div>
+
+              <form class="details-form" id="detailsForm">
+                <div class="form-section-heading">
+                  <h3>Personal details</h3>
+                  <span>Shown in the signature</span>
+                </div>
+
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Full name</span>
+                    <input id="fullName" name="fullName" type="text" autocomplete="name" />
+                  </label>
+                  <label class="field">
+                    <span>Pronouns</span>
+                    <input id="pronouns" name="pronouns" type="text" placeholder="Optional, e.g. they/them" />
+                  </label>
+                  <label class="field">
+                    <span>Job title</span>
+                    <input id="jobTitle" name="jobTitle" type="text" autocomplete="organization-title" />
+                  </label>
+                  <label class="field">
+                    <span>Email address</span>
+                    <input id="email" name="email" type="email" autocomplete="email" />
+                  </label>
+                  <label class="field">
+                    <span>Phone number</span>
+                    <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional" />
+                  </label>
+                </div>
+
+                <div class="form-section-heading form-section-spaced">
+                  <h3>Events</h3>
+                  <span class="image-heading-actions">
+                    <span>Shown below the signature</span>
+                    <button class="button button-secondary button-small add-slot-button" id="addImageSlot" type="button">Add event</button>
+                  </span>
+                </div>
+                <div class="image-slot-grid" id="imageSlots"></div>
+              </form>
+            </div>
+          </section>
+
+          <aside class="preview-panel">
+            <div class="preview-heading">
+              <div>
+                <p class="eyebrow">Live preview</p>
+                <h2>Looking good</h2>
+              </div>
+              <div class="view-toggle" aria-label="Preview background">
+                <button class="is-active" data-preview-theme="light" type="button" aria-label="Light background">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+                </button>
+                <button data-preview-theme="dark" type="button" aria-label="Dark background">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6 8.5 8.5 0 1 0 20.4 15.4Z"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="email-stage" id="emailStage">
+              <div class="email-card">
+                <div class="email-chrome">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="email-body">
+                  <p>Kind regards,</p>
+                  <div id="signaturePreview"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-footer">
+              <div>
+                <strong>Ready to use</strong>
+                <span>Works with Gmail, Outlook and Apple Mail.</span>
+              </div>
+              <div class="preview-actions">
+                <button class="icon-button" id="downloadHtml" type="button" aria-label="Download HTML">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v12M7 10l5 5 5-5"></path>
+                    <path d="M5 21h14"></path>
+                  </svg>
+                </button>
+                <button class="button button-primary" id="copySignature" type="button">Copy signature</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+      <span>Signature copied</span>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
