@@ -8,33 +8,54 @@ const campaignPresets = [
     id: "vikings",
     label: "Vikings",
     color: "#5130b8",
-    image: "assets/vikings-thumb.jpg",
+    image: "assets/vikings-thumb.png",
     link: "https://vikings-immersive.co.uk",
   },
   {
     id: "cleopatra",
     label: "Cleopatra",
     color: "#2d6f67",
-    image: "assets/cleopatra-thumb.jpg",
+    image: "assets/cleopatra-thumb.png",
     link: "https://cleopatraexperience.co.uk",
   },
   {
     id: "tutankhamun",
     label: "Tutankhamun",
     color: "#b66b1f",
-    image: "assets/tutankhamun-thumb.jpg",
+    image: "assets/tutankhamun-thumb.png",
     link: "https://tutankhamunexperience.com",
   },
   {
     id: "minecraft",
     label: "Minecraft Experience",
     color: "#4f8f36",
-    image: "assets/minecraft-thumb.jpg",
+    image: "assets/minecraft-thumb.png",
     link: "https://www.minecraftexperience.com",
+  },
+  {
+    id: "formula-1",
+    label: "Formula 1 Exhibition",
+    color: "#111111",
+    image: "assets/formula-1-thumb.png",
+    link: "https://f1exhibition.com/",
+  },
+  {
+    id: "titanic",
+    label: "Titanic Exhibition",
+    color: "#7aa6c8",
+    image: "assets/titanic-thumb.png",
+    link: "https://legend-of-titanic.com/",
   },
 ];
 
 const placeholderImages = campaignPresets.slice(0, 3).map((preset) => ({ ...preset, presetId: preset.id }));
+const campaignPresetById = Object.fromEntries(campaignPresets.map((preset) => [preset.id, preset]));
+const legacyPresetIdsByImage = {
+  "assets/vikings-thumb.jpg": "vikings",
+  "assets/cleopatra-thumb.jpg": "cleopatra",
+  "assets/tutankhamun-thumb.jpg": "tutankhamun",
+  "assets/minecraft-thumb.jpg": "minecraft",
+};
 
 const defaultState = {
   activePersonId: "james-cassidy",
@@ -170,20 +191,26 @@ function activePerson() {
 }
 
 function normalizeFooterImages(images) {
-  return images.map((item, index) => ({
-    ...(placeholderImages[index] || {
+  return images.map((item, index) => {
+    const presetId = item.presetId || legacyPresetIdsByImage[item.image] || "";
+    const preset = campaignPresetById[presetId];
+
+    return {
+      ...(placeholderImages[index] || {
       label: `Image ${index + 1}`,
       color: "#26634f",
       image: "",
       link: "",
     }),
-    ...item,
-    label: item.label || `Image ${index + 1}`,
-    color: item.color || placeholderImages[index]?.color || "#26634f",
-    image: item.image || "",
-    link: item.link || "",
-    presetId: item.presetId || "",
-  }));
+      ...item,
+      ...(preset || {}),
+      label: preset?.label || item.label || `Image ${index + 1}`,
+      color: preset?.color || item.color || placeholderImages[index]?.color || "#26634f",
+      image: preset?.image || item.image || "",
+      link: preset?.link || item.link || "",
+      presetId,
+    };
+  });
 }
 
 function newFooterImageSlot() {
@@ -327,7 +354,7 @@ function signatureHtml() {
       </tr>
       <tr>
         <td style="padding:0;">
-          <table width="390" cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:390px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+          <table width="327" cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:327px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
             <tr><td height="1" bgcolor="#cfcfcf" style="height:1px;background:#cfcfcf;font-size:0;line-height:0;">&nbsp;</td></tr>
           </table>
         </td>
@@ -346,7 +373,7 @@ function signatureHtml() {
       </tr>
       <tr>
         <td style="padding:0;">
-          <table width="390" cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:390px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+          <table width="327" cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:327px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
             <tr><td height="1" bgcolor="#cfcfcf" style="height:1px;background:#cfcfcf;font-size:0;line-height:0;">&nbsp;</td></tr>
           </table>
         </td>
