@@ -5,11 +5,14 @@
   --soft-line: #edf0ee;
   --paper: #ffffff;
   --canvas: #f4f6f4;
-  --accent: #e8643c;
-  --accent-dark: #c94e2b;
-  --accent-soft: #fff0ea;
-  --green: #26634f;
-  --shadow: 0 18px 50px rgba(26, 48, 39, 0.09);
+  --accent: #23758b;
+  --accent-dark: #155f72;
+  --accent-soft: #e8f3f6;
+  --button: #f36b2a;
+  --button-dark: #d9521d;
+  --button-soft: #fff0e8;
+  --green: #23758b;
+  --shadow: 0 18px 50px rgba(21, 95, 114, 0.11);
 }
 
 * {
@@ -41,7 +44,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 .upload-button:focus-within {
-  outline: 3px solid rgba(232, 100, 60, 0.2);
+  outline: 3px solid rgba(35, 117, 139, 0.22);
   outline-offset: 2px;
 }
 
@@ -170,22 +173,23 @@ h1 {
 
 .button-primary {
   color: #fff;
-  background: var(--accent);
-  box-shadow: 0 8px 18px rgba(207, 78, 43, 0.2);
+  background: var(--button);
+  box-shadow: 0 8px 18px rgba(217, 82, 29, 0.22);
 }
 
 .button-primary:hover {
-  background: var(--accent-dark);
+  background: var(--button-dark);
 }
 
 .button-secondary {
-  color: #36413d;
+  color: var(--button-dark);
   background: #fff;
-  border: 1px solid #dce2df;
+  border: 1px solid rgba(243, 107, 42, 0.34);
 }
 
 .button-secondary:hover {
-  border-color: #c7d0cb;
+  border-color: var(--button);
+  background: var(--button-soft);
 }
 
 .button-small {
@@ -283,6 +287,10 @@ h1 {
   background: var(--accent-soft);
   border-radius: 20px;
   font-size: 10px;
+}
+
+.is-hidden {
+  display: none !important;
 }
 
 .tab-content {
@@ -436,7 +444,7 @@ h1 {
 .field input:focus,
 .field select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(232, 100, 60, 0.1);
+  box-shadow: 0 0 0 3px rgba(35, 117, 139, 0.12);
 }
 
 .color-input-wrap {
@@ -572,7 +580,7 @@ h1 {
 
 .text-button {
   padding: 4px 0;
-  color: #8b4a39;
+  color: var(--button-dark);
   background: transparent;
   border: 0;
   font-size: 10px;
@@ -614,6 +622,7 @@ h1 {
 }
 
 .preview-heading {
+  min-height: 34px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -780,6 +789,28 @@ h1 {
   color: #7ee0b8;
 }
 
+.icon-button,
+.button,
+.workspace,
+.tab::after,
+.count-badge,
+.people-strip,
+.person-card,
+.field input,
+.field select,
+.photo-control,
+.image-slot,
+.image-slot-preview,
+.photo-preview,
+.logo-preview,
+.view-toggle,
+.view-toggle button,
+.email-stage,
+.email-card,
+.toast {
+  border-radius: 0;
+}
+
 @media (max-width: 1120px) {
   .workspace {
     grid-template-columns: 1fr;
@@ -936,4 +967,28 @@ h1 {
   .preview-footer {
     justify-content: flex-end;
   }
+}
+
+.icon-button,
+.button,
+.workspace,
+.tab::after,
+.count-badge,
+.people-strip,
+.person-card,
+.field input,
+.field select,
+.photo-control,
+.image-slot,
+.image-slot-preview,
+.photo-preview,
+.logo-preview,
+.view-toggle,
+.view-toggle button,
+.email-stage,
+.email-card,
+.toast,
+.saved-dot,
+.email-chrome span {
+  border-radius: 0;
 }
