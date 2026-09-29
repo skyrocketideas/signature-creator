@@ -1,7 +1,7 @@
 const STORAGE_KEY = "email-sigs-fkp-template-v5";
 const LOCKED_COMPANY_NAME = "FKP Scorpio Entertainment Ltd";
 const LOCKED_WEBSITE = "fkpscorpioentertainment.com";
-const LOCKED_LOGO_PATH = "assets/fkp-logo-black-email.png";
+const LOCKED_LOGO_PATH = "assets/fkp-logo-blue-email.png";
 
 const campaignPresets = [
   {
@@ -46,9 +46,27 @@ const campaignPresets = [
     image: "assets/titanic-thumb.png",
     link: "https://legend-of-titanic.com/",
   },
+  {
+    id: "blue-planet-iii",
+    label: "Blue Planet III Live in Concert",
+    color: "#071b53",
+    image: "assets/blue-planet-thumb.png",
+    link: "https://bbcblueplanet3live.com/",
+  },
+  {
+    id: "alice-in-wonderland",
+    label: "Alice in Wonderland",
+    color: "#60154f",
+    image: "assets/alice-thumb.png",
+    link: "https://aliceimmersivewonderland.com/",
+  },
 ];
 
-const placeholderImages = campaignPresets.slice(0, 3).map((preset) => ({ ...preset, presetId: preset.id }));
+const defaultPresetIds = ["alice-in-wonderland", "blue-planet-iii"];
+const placeholderImages = defaultPresetIds.map((presetId) => {
+  const preset = campaignPresets.find((item) => item.id === presetId);
+  return { ...preset, presetId };
+});
 const campaignPresetById = Object.fromEntries(campaignPresets.map((preset) => [preset.id, preset]));
 const legacyPresetIdsByImage = {
   "assets/vikings-thumb.jpg": "vikings",
@@ -164,11 +182,15 @@ try {
 }
 
 const sharedFooterImages = state.company.footerImages || structuredClone(placeholderImages);
-state.people = state.people.map((person) => ({
-  ...person,
-  phone: person.phone || "",
-  footerImages: normalizeFooterImages(person.footerImages || sharedFooterImages),
-}));
+state.people = state.people.map((person) => {
+  const footerImages = normalizeFooterImages(person.footerImages || sharedFooterImages);
+
+  return {
+    ...person,
+    phone: person.phone || "",
+    footerImages: usesPreviousDefaultFooterImages(footerImages) ? structuredClone(placeholderImages) : footerImages,
+  };
+});
 delete state.company.footerImages;
 
 const elements = {
@@ -211,6 +233,15 @@ function normalizeFooterImages(images) {
       presetId,
     };
   });
+}
+
+function usesPreviousDefaultFooterImages(images) {
+  const previousDefaults = [["vikings"], ["vikings", "cleopatra", "tutankhamun"]];
+  const presetIds = images.map((item) => item.presetId);
+
+  return previousDefaults.some(
+    (defaultIds) => presetIds.length === defaultIds.length && presetIds.every((presetId, index) => presetId === defaultIds[index]),
+  );
 }
 
 function newFooterImageSlot() {
@@ -319,6 +350,16 @@ function signatureHtml() {
               </td>
             </tr>`
     : "";
+  const eventsRow = person.footerImages.length
+    ? `
+      <tr>
+        <td style="padding:8px 0 0;">
+          <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+            <tr>${footerImagesHtml()}</tr>
+          </table>
+        </td>
+      </tr>`
+    : "";
   return `
     <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,sans-serif;color:#000000;">
       <tr>
@@ -378,13 +419,7 @@ function signatureHtml() {
           </table>
         </td>
       </tr>
-      <tr>
-        <td style="padding:8px 0 0;">
-          <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
-            <tr>${footerImagesHtml()}</tr>
-          </table>
-        </td>
-      </tr>
+      ${eventsRow}
     </table>
   `.trim();
 }
@@ -433,7 +468,7 @@ function renderImageSlots() {
           </label>
           <div class="photo-actions">
             <button class="text-button slot-reset" type="button" data-slot-index="${index}">
-              ${index < placeholderImages.length ? "Reset" : "Remove"}
+              Remove
             </button>
           </div>
           </div>
@@ -555,11 +590,7 @@ elements.imageSlots.addEventListener("click", (event) => {
   if (!event.target.matches(".slot-reset")) return;
   const index = Number(event.target.dataset.slotIndex);
   const person = activePerson();
-  if (index < placeholderImages.length) {
-    person.footerImages[index] = structuredClone(placeholderImages[index]);
-  } else {
-    person.footerImages.splice(index, 1);
-  }
+  person.footerImages.splice(index, 1);
   renderImageSlots();
   renderSignature();
   saveState();
